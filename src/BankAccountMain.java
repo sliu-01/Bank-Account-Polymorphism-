@@ -241,10 +241,24 @@ public class BankAccountMain
 	{
 		Scanner in = new Scanner(System.in);
 		System.out.println("The account number you entered is not a valid response.\nWhat would you like to do next?\nEnter Another Account Number\tFind My Accounts");
-		String choice1 = in.next();
+		String choice1 = in.nextLine();
 		in.nextLine();
 		
 		while (!choice1.toLowerCase().equals("enter another account number") && !choice1.toLowerCase().equals("find my account"))
+		{
+			System.out.println("Please enter a valid response:\nEnter Another Account Number\tFind My Accounts");
+			choice1 = in.nextLine();
+			in.nextLine();
+		}
+		
+		if (choice1.toLowerCase().equals("enter another account number"))
+		{
+			 System.out.println("Please enter your account humber: ");
+			 int accNum = in.nextInt();
+			 in.nextLine();
+			 
+		}
+		else
 		{
 			
 		}
