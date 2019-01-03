@@ -111,10 +111,10 @@ public class BankAccountMain
 			{
 				BankAccount accountInUse = null;
 				System.out.println("Which transaction would you like to select: \nWithdraw\tDeposit\tTransfer\tGet Account Number");
-				String choice = in.nextLine();
+				String choice = in.nextLine().toLowerCase();
 				in.nextLine();
 				
-				while(!choice.toLowerCase().equals("withdraw") && !choice.toLowerCase().equals("desposit") && !choice.toLowerCase().equals("transfer") && !choice.toLowerCase().equals("get account number"))
+				while(!choice.toLowerCase().equals("withdraw") && !choice.toLowerCase().equals("deposit") && !choice.toLowerCase().equals("transfer") && !choice.toLowerCase().equals("get account number"))
 				{
 					System.out.println("Please enter a valid response: \nWithdraw\tDeposit\tTransfer\tGet Account Number");
 					choice = in.nextLine();
@@ -136,16 +136,16 @@ public class BankAccountMain
 				}
 				while(notFound)
 				{
-					System.out.println("We apologise, but we cannot find the account linked with the number you entered." + 
+					System.out.println("We apologise, but we cannot find the account linked with your input." + 
 							"\nWould you like to enter a new account number or have us show all accounts under your name: " +
 							"\nEnter Another Account Number\tShow My Accounts");
-					String choice1 = in.next();
+					String choice1 = in.nextLine();
 					in.nextLine();
 					
 					while(!choice1.toLowerCase().equals("enter another account number") && !choice1.toLowerCase().equals("show my accounts"))
 					{
 						System.out.println("Please enter a valid response: \nEnter Another Acount Number\tShow My Accounts");
-						choice1 = in.next();
+						choice1 = in.nextLine();
 						in.nextLine();
 					}
 					
@@ -177,12 +177,7 @@ public class BankAccountMain
 								notFound = false;
 							}
 						}
-						
-						if (notFound)
-						{
-							System.out.println("We are sorry, but there are no accounts under the name you entered.\nYou will be returned to the home screen.");
-						}
-						else
+						if (!notFound)
 						{
 							for (BankAccount account : accounts)
 							{
@@ -202,45 +197,58 @@ public class BankAccountMain
 					}
 					
 				}
-				if (!notFound)
+				if (choice.toLowerCase().equals("withdraw"))
 				{
-					if (choice.toLowerCase().equals("withdraw"))
+					System.out.println("How much would you like to withdraw? ");
+					int amount = in.nextInt();
+					in.nextLine();
+					
+					accountInUse.withdraw(amount);
+				}
+				
+				else if (choice.toLowerCase().equals("deposit"))
+				{
+					System.out.println("How much would you like to deposit? ");
+					int amount = in.nextInt();
+					in.nextLine();
+					
+					accountInUse.deposit(amount);
+				}
+				
+				else if (choice.toLowerCase().equals("transfer"))
+				{
+					System.out.println("Please enter the account number you would like to transfer to: ");
+					int otherAccNum = in.nextInt();
+					BankAccount otherAccount = null;
+					in.nextInt();
+					
+					boolean notValid = true;
+					for (BankAccount account : accounts)
 					{
-						System.out.println("How much would you like to withdraw? ");
-						int amount = in.nextInt();
-						in.nextLine();
-						
-						accountInUse.withdraw(amount);
+						if (otherAccNum == account.getAccountNum())
+						{
+							notValid = false;
+							otherAccount = account;
+						}
 					}
 					
-					else if (choice.toLowerCase().equals("deposit"))
-					{
-						System.out.println("How much would you like to deposit? ");
-						int amount = in.nextInt();
-						in.nextLine();
-						
-						accountInUse.deposit(amount);
-					}
+					System.out.println("How much would you like to transfer? ");
+					int amount = in.nextInt();
+					in.nextLine();
+					accountInUse.transfer(otherAccount, amount);
 					
-					else if (choice.toLowerCase().equals("transfer"))
-					{
-						
-						System.out.println("How much would you like to transfer? ");
-						int amount = in.nextInt();
-						in.nextLine();
-						
-
-					}
 				}
 			}
 		}
 
 	}
 	
-	public static String reprompt()
+	/**public static String reprompt()
 	{
+		ArrayList<BankAccount> accounts = new ArrayList<>();
+		
 		Scanner in = new Scanner(System.in);
-		System.out.println("The account number you entered is not a valid response.\nWhat would you like to do next?\nEnter Another Account Number\tFind My Accounts");
+		System.out.println("The input is not a valid response.\nWhat would you like to do next?\nEnter Another Account Number\tFind My Accounts");
 		String choice1 = in.nextLine();
 		in.nextLine();
 		
@@ -253,16 +261,66 @@ public class BankAccountMain
 		
 		if (choice1.toLowerCase().equals("enter another account number"))
 		{
-			 System.out.println("Please enter your account humber: ");
-			 int accNum = in.nextInt();
-			 in.nextLine();
+			System.out.println("Please enter your account number: ");
+			int accNum = in.nextInt();
+			in.nextLine(); 
 			 
-			 for (BankAccount account : )
+			boolean existing = false;
+			for (BankAccount account : accounts)
+			{
+				if (accNum == account.getAccountNum())
+				{
+					existing = true;
+				}
+			}
+			
+			if (!existing)
+			{
+				reprompt();
+			}
+			else
+			{
+				
+			}
 		}
 		else
 		{
 			
+			System.out.println("Please enter the name your account is under: ");
+			String name = in.nextLine();
+			in.nextLine();
+			
+			boolean existing = false;
+			for (BankAccount account : accounts)
+			{
+				if (name.toLowerCase().equals(account.getName().toLowerCase()))
+				{
+					existing = true;
+				}
+			}
+			
+			if (!existing)
+			{
+				reprompt();
+			}
+			else
+			{
+				for (BankAccount account : accounts)
+				{
+					if (account.getName().equals(name))
+					{
+						if (account instanceof CheckingAccount)
+						{
+							System.out.println("Checking Account " +  account.getAccountNum());
+						}
+						else
+						{
+							System.out.println("Savings Account " +  account.getAccountNum());
+						}
+					}
+				}
+			}
 		}
-	}
+	}**/
 
 }

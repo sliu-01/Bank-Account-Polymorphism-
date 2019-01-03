@@ -11,12 +11,14 @@ public abstract class BankAccount
 		name = n;
 		accNum = nextAccNum;
 		balance = 0;
+		nextAccNum++;
 	}
 	public BankAccount(String n, double b)
 	{
 		name = n;
 		accNum = nextAccNum;
 		balance = b;
+		nextAccNum++;
 	}
 	public void deposit(double amt)
 	{
@@ -46,6 +48,6 @@ public abstract class BankAccount
 	}
 	public int getAccountNum()
 	{
-		return nextAccNum;
+		return accNum;
 	}
 }

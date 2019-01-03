@@ -12,6 +12,7 @@ public class CheckingAccount extends BankAccount
 		this.OVER_DRAFT_FEE = odf;
 		this.TRANSACTION_FEE = tf;
 		this.FREE_TRANS = freeTrans;
+		
 	}
 	public CheckingAccount(String n, double odf, double tf, double freeTrans)
 	{
