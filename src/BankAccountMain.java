@@ -194,8 +194,7 @@ public class BankAccountMain
 								}
 							}
 						}
-					}
-					
+					}	
 				}
 				if (choice.toLowerCase().equals("withdraw"))
 				{
@@ -231,96 +230,89 @@ public class BankAccountMain
 							otherAccount = account;
 						}
 					}
-					
+					while(notValid)
+					{
+						System.out.println("We apologise, but we cannot find the account linked with your input." + 
+								"\nWould you like to enter a new account number or have us show all accounts under a name of your choice: " +
+								"\nEnter Another Account Number\tShow Accounts");
+						String choice1 = in.nextLine();
+						in.nextLine();
+						
+						while(!choice1.toLowerCase().equals("enter another account number") && !choice1.toLowerCase().equals("show accounts"))
+						{
+							System.out.println("Please enter a valid response: \nEnter Another Acount Number\tShow Accounts");
+							choice1 = in.nextLine();
+							in.nextLine();
+						}
+						
+						if (choice1.toLowerCase().equals("enter another account number"))
+						{
+							System.out.println("Please enter the account number: ");
+							accountNum = in.nextInt();
+							in.nextLine();
+							
+							for (BankAccount account : accounts)
+							{
+								if (account.getAccountNum() == accountNum)
+								{
+									notFound = false;
+								}
+							}
+						}
+						
+						else if (choice1.toLowerCase().equals("show accounts"))
+						{
+							System.out.println("Please enter the name the accounts are under");
+							String nameInput = in.next();
+							in.nextLine();
+							
+							for (BankAccount account : accounts)
+							{
+								if (account.getName().equals(nameInput))
+								{
+									notFound = false;
+								}
+							}
+							if (!notFound)
+							{
+								for (BankAccount account : accounts)
+								{
+									if (account.getName().equals(nameInput))
+									{
+										if (account instanceof CheckingAccount)
+										{
+											System.out.println("Checking Account " +  account.getAccountNum());
+										}
+										else
+										{
+											System.out.println("Savings Account " +  account.getAccountNum());
+										}
+									}
+								}
+							}
+						}
+					}
 					System.out.println("How much would you like to transfer? ");
 					int amount = in.nextInt();
 					in.nextLine();
 					accountInUse.transfer(otherAccount, amount);
-					
 				}
 			}
 		}
 
 	}
 	
-	/**public static String reprompt()
+	private static boolean isNumeric(String str)
 	{
-		ArrayList<BankAccount> accounts = new ArrayList<>();
-		
-		Scanner in = new Scanner(System.in);
-		System.out.println("The input is not a valid response.\nWhat would you like to do next?\nEnter Another Account Number\tFind My Accounts");
-		String choice1 = in.nextLine();
-		in.nextLine();
-		
-		while (!choice1.toLowerCase().equals("enter another account number") && !choice1.toLowerCase().equals("find my account"))
+		try
 		{
-			System.out.println("Please enter a valid response:\nEnter Another Account Number\tFind My Accounts");
-			choice1 = in.nextLine();
-			in.nextLine();
+			Double.parseDouble(str);
+			return true;
 		}
-		
-		if (choice1.toLowerCase().equals("enter another account number"))
+		catch (IllegalArgumentException e)
 		{
-			System.out.println("Please enter your account number: ");
-			int accNum = in.nextInt();
-			in.nextLine(); 
-			 
-			boolean existing = false;
-			for (BankAccount account : accounts)
-			{
-				if (accNum == account.getAccountNum())
-				{
-					existing = true;
-				}
-			}
-			
-			if (!existing)
-			{
-				reprompt();
-			}
-			else
-			{
-				
-			}
+			return false;
 		}
-		else
-		{
-			
-			System.out.println("Please enter the name your account is under: ");
-			String name = in.nextLine();
-			in.nextLine();
-			
-			boolean existing = false;
-			for (BankAccount account : accounts)
-			{
-				if (name.toLowerCase().equals(account.getName().toLowerCase()))
-				{
-					existing = true;
-				}
-			}
-			
-			if (!existing)
-			{
-				reprompt();
-			}
-			else
-			{
-				for (BankAccount account : accounts)
-				{
-					if (account.getName().equals(name))
-					{
-						if (account instanceof CheckingAccount)
-						{
-							System.out.println("Checking Account " +  account.getAccountNum());
-						}
-						else
-						{
-							System.out.println("Savings Account " +  account.getAccountNum());
-						}
-					}
-				}
-			}
-		}
-	}**/
+	}
 
 }
