@@ -64,9 +64,16 @@ public class BankAccountMain
 					else if (choice.toLowerCase().equals("yes"))
 					{
 						System.out.println("Please enter your balance: ");
-						int balance = in.nextInt();
+						String balance = in.next();
 						in.nextLine();
-						CheckingAccount newEntry = new CheckingAccount(name, balance, OVER_DRAFT_FEE, TRANSACTION_FEE, FREE_TRANSACTIONS);
+						
+						while (!isNumeric(balance))
+						{
+							System.out.println("The value you input is not valid. Please try again: ");
+							balance = in.next();
+							in.nextLine();
+						}
+						CheckingAccount newEntry = new CheckingAccount(name, Double.parseDouble(balance), OVER_DRAFT_FEE, TRANSACTION_FEE, FREE_TRANSACTIONS);
 						accounts.add(newEntry);
 					}
 					else
@@ -94,9 +101,16 @@ public class BankAccountMain
 					else if (choice.toLowerCase().equals("yes"))
 					{
 						System.out.println("Please enter your balance: ");
-						int balance = in.nextInt();
+						String balance = in.next();
 						in.nextLine();
-						SavingsAccount newEntry = new SavingsAccount(name, balance, RATE, MIN_BAL, MIN_BAL_FEE);
+						
+						while (!isNumeric(balance))
+						{
+							System.out.println("The value you input is not valid. Please try again: ");
+							balance = in.next();
+							in.nextLine();
+						}
+						SavingsAccount newEntry = new SavingsAccount(name, Double.parseDouble(balance), RATE, MIN_BAL, MIN_BAL_FEE);
 						accounts.add(newEntry);
 					}
 					else
@@ -111,7 +125,7 @@ public class BankAccountMain
 			{
 				BankAccount accountInUse = null;
 				System.out.println("Which transaction would you like to select: \nWithdraw\tDeposit\tTransfer\tGet Account Number");
-				String choice = in.nextLine().toLowerCase();
+				String choice = in.nextLine();
 				in.nextLine();
 				
 				while(!choice.toLowerCase().equals("withdraw") && !choice.toLowerCase().equals("deposit") && !choice.toLowerCase().equals("transfer") && !choice.toLowerCase().equals("get account number"))
@@ -122,13 +136,20 @@ public class BankAccountMain
 				}
 				
 				System.out.println("Please enter your account number: ");
-				int accountNum = in.nextInt();
+				String accountNum = in.next();
 				in.nextLine();
 				
+				while (!isNumeric(accountNum))
+				{
+					System.out.println("The value you input is not valid. Please try again: ");
+					accountNum = in.next();
+					in.nextLine();
+				}
+				double accNum = Double.parseDouble(accountNum);
 				boolean notFound = true;
 				for (BankAccount account : accounts)
 				{
-					if (account.getAccountNum() == accountNum)
+					if (account.getAccountNum() == accNum)
 					{
 						notFound = false;
 						accountInUse = account;
@@ -152,12 +173,19 @@ public class BankAccountMain
 					if (choice1.toLowerCase().equals("enter another account number"))
 					{
 						System.out.println("Please enter your account number: ");
-						accountNum = in.nextInt();
+						accountNum = in.next();
 						in.nextLine();
 						
+						while (!isNumeric(accountNum))
+						{
+							System.out.println("The value you input is not valid. Please try again: ");
+							accountNum = in.next();
+							in.nextLine();
+						}
+						accNum = Double.parseDouble(accountNum);
 						for (BankAccount account : accounts)
 						{
-							if (account.getAccountNum() == accountNum)
+							if (account.getAccountNum() == accNum)
 							{
 								notFound = false;
 							}
@@ -199,32 +227,64 @@ public class BankAccountMain
 				if (choice.toLowerCase().equals("withdraw"))
 				{
 					System.out.println("How much would you like to withdraw? ");
-					int amount = in.nextInt();
+					String amount = in.next();
 					in.nextLine();
 					
-					accountInUse.withdraw(amount);
+					while (!isNumeric(amount))
+					{
+						System.out.println("The value you input is not valid. Please try again: ");
+						amount = in.next();
+						in.nextLine();
+					}
+					try
+					{
+						accountInUse.withdraw(Double.parseDouble(amount));
+					}
+					catch (IllegalArgumentException e)
+					{
+						System.out.println("You made an illegal action. It did not do through.");
+					}
 				}
 				
 				else if (choice.toLowerCase().equals("deposit"))
 				{
 					System.out.println("How much would you like to deposit? ");
-					int amount = in.nextInt();
+					String amount = in.next();
 					in.nextLine();
+					while (!isNumeric(amount))
+					{
+						System.out.println("The value you input is not valid. Please try again: ");
+						amount = in.next();
+						in.nextLine();
+					}
+					try
+					{
+						accountInUse.deposit(Double.parseDouble(amount));
+					}
+					catch (IllegalArgumentException e)
+					{
+						System.out.println("You made an illegal action. It did not do through.");
+					}
 					
-					accountInUse.deposit(amount);
 				}
 				
 				else if (choice.toLowerCase().equals("transfer"))
 				{
 					System.out.println("Please enter the account number you would like to transfer to: ");
-					int otherAccNum = in.nextInt();
+					String otherAccNum = in.next();
 					BankAccount otherAccount = null;
-					in.nextInt();
-					
+					in.nextLine();
+					while (!isNumeric(otherAccNum))
+					{
+						System.out.println("The value you input is not valid. Please try again: ");
+						accountNum = in.next();
+						in.nextLine();
+					}
+					double otherAccountNum = Double.parseDouble(otherAccNum);
 					boolean notValid = true;
 					for (BankAccount account : accounts)
 					{
-						if (otherAccNum == account.getAccountNum())
+						if (otherAccountNum == account.getAccountNum())
 						{
 							notValid = false;
 							otherAccount = account;
@@ -248,12 +308,18 @@ public class BankAccountMain
 						if (choice1.toLowerCase().equals("enter another account number"))
 						{
 							System.out.println("Please enter the account number: ");
-							accountNum = in.nextInt();
+							otherAccNum = in.next();
 							in.nextLine();
-							
+							while (!isNumeric(otherAccNum))
+							{
+								System.out.println("The value you input is not valid. Please try again: ");
+								otherAccNum = in.next();
+								in.nextLine();
+							}
+							otherAccountNum = Double.parseDouble(otherAccNum);
 							for (BankAccount account : accounts)
 							{
-								if (account.getAccountNum() == accountNum)
+								if (account.getAccountNum() == otherAccountNum)
 								{
 									notFound = false;
 								}
@@ -293,9 +359,64 @@ public class BankAccountMain
 						}
 					}
 					System.out.println("How much would you like to transfer? ");
-					int amount = in.nextInt();
+					String amount = in.next();
 					in.nextLine();
-					accountInUse.transfer(otherAccount, amount);
+					while (isNumeric(amount))
+					{
+						System.out.println("The value you input is not valid. Please try again: ");
+						amount = in.next();
+						in.nextLine();
+					}
+					double amt = Double.parseDouble(amount);
+					try
+					{
+						accountInUse.transfer(otherAccount, amt);
+					}
+					catch (IllegalArgumentException e)
+					{
+						System.out.println("You made an illegal action. It did not do through.");
+					}
+				}
+				if (choice.toLowerCase().equals("get account number"))
+				{
+					System.out.println("Please input the name you account falls under: ");
+					String name = in.nextLine();
+					in.nextLine();
+					boolean existing = true;
+					for (BankAccount account : accounts)
+					{
+						if (name.equals(account.getName()))
+						{
+							existing = false;
+						}
+					}
+					while (existing)
+					{
+						System.out.println("The name you input does not match a name linked to an account.\nPlease Try Again, Capitalization Matters: ");
+						name = in.nextLine();
+						in.nextLine();
+						for (BankAccount account : accounts)
+						{
+							if (name.equals(account.getName()))
+							{
+								existing = false;
+							}
+						}
+					}
+					for (BankAccount account : accounts)
+					{
+						if (account.getName().equals(name))
+						{
+							if (account instanceof CheckingAccount)
+							{
+								System.out.println("Checking Account: " +  account.getAccountNum());
+							}
+							else
+							{
+								System.out.println("Savings Account: " +  account.getAccountNum());
+							}
+						}
+					}
 				}
 			}
 		}
