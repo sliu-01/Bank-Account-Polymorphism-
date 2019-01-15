@@ -29,20 +29,32 @@ public class BankAccountMain
 				System.out.println("Please enter a valid choice: \nAdd Another Account\tMake a Transaction\tTerminate");
 				answer = in.nextLine().trim();
 			}
+			/**
+			 * Terminates the program
+			 */
 			if (answer.toLowerCase().equals("terminate"))
 			{
 				ongoing = false;
 			}
+			/**
+			 * Adds another account
+			 */
 			else if (answer.toLowerCase().equals("add another account"))
 			{
 				System.out.println("What type of account would you like to create? \nChecking Account\tSavings Account");
 				String type = in.nextLine().trim().toLowerCase();
 				
+				/**
+				 * Checks if the input is valid
+				 */
 				while (!type.equals("checking account") && !type.equals("savings account"))
 				{
 					System.out.println("Please enter a valid response: \nChecking Account\tSavings Account");
 					type = in.nextLine().trim();
 				}
+				/**
+				 * Creates a checking account
+				 */
 				if (type.toLowerCase().equals("checking account"))
 				{
 					System.out.println("Please enter your name: ");
@@ -50,11 +62,17 @@ public class BankAccountMain
 					System.out.println("Would you like to enter a balance: (yes or no)");
 					String choice = in.nextLine().trim();
 					
+					/**
+					 * reprompts to get a valid input
+					 */
 					if (!choice.toLowerCase().equals("yes") && !choice.toLowerCase().equals("no"))
 					{
 						System.out.println("Please enter a valid response: (yes or no)");
 						choice = in.nextLine().trim();
 					}
+					/**
+					 * creates a checking account with a balance
+					 */
 					else if (choice.toLowerCase().equals("yes"))
 					{
 						System.out.println("Please enter your balance: ");
@@ -68,6 +86,9 @@ public class BankAccountMain
 						CheckingAccount newEntry = new CheckingAccount(name, Double.parseDouble(balance), OVER_DRAFT_FEE, TRANSACTION_FEE, FREE_TRANSACTIONS);
 						accounts.add(newEntry);
 					}
+					/**
+					 * creates a checking 
+					 */
 					else
 					{
 						CheckingAccount newEntry = new CheckingAccount(name, 0, OVER_DRAFT_FEE, TRANSACTION_FEE, FREE_TRANSACTIONS);
